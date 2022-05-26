@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conveyor Stystem</title>
+    <style>
+        * {
+            margin: 0%;
+            background-color: beige;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-decoration: underline;
+        }
+
+        h6 {
+            font-size: 2em;
+            text-align: center;
+            color: blue;
+        }
+
+        #count {
+            padding: 40px;
+            border: solid blue 2px;
+        }
+
+        #ON {
+            background-color: green;
+        }
+
+        #OFF {
+            background-color: red;
+        }
+        #Rst{
+            background-color: brown;
+        }
+        #count{
+            text-align: center;
+            font-size: 50px;
+        }
+        button {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            display: block;
+            margin-left: 30%;
+            width: 30%;
+            padding: auto;
+            font-size: 30px;
+
+        }
+
+        #st {
+            text-align: center;
+            color: green;
+            margin-top: 20px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">IOT based Conveyor Stystem</h1>
+    <br>
+    <h6>Count</h6>
+    <div id="count" onclick=count()></div>
+    <br>
+    <button id="ON" onclick=On()> Start</button>
+    <button id="OFF" onclick=Off()> Stop</button>
+    <button id="Rst" onclick=rst()> Reset</button>
+    <p id="st"></p>
+    <p id="su"></p>
+
+</body>
+<script>
+    // let url="https://api.thingspeak.com/channels/1720393/feeds.json?results=2";
+    let url="https://api.thingspeak.com/channels/1749155/feeds.json?results=1";
+    function co() {
+        fetch(url)
+        .then(x=>x.json())
+        .then(y=>document.getElementById("count").innerHTML=y["feeds"][0]["field2"]-1);
+        }
+    var Inter = setInterval(co,1000);
+
+    function rst(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // document.getElementById("su").innerHTML =
+                //     this.responseText;
+            }
+        };
+        xhttp.open("GET", "https://api.thingspeak.com/update?api_key=W7EAO7E7ZWAS3ZYB&field2=1", true);
+
+        document.getElementById("st").innerHTML = "Successfuly Reseted";
+        xhttp.send();
+    }
+
+    function On() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // document.getElementById("su").innerHTML =
+                //     this.responseText;
+            }
+        };
+        // xhttp.open("GET", "https://api.thingspeak.com/update?api_key=D58F8NEVMTQOL5RG&field1=5", true);
+        xhttp.open("GET", "https://api.thingspeak.com/update?api_key=W7EAO7E7ZWAS3ZYB&field1=5", true);
+        document.getElementById("st").innerHTML = "Successfuly Turned ON";
+        xhttp.send();
+    }
+
+
+    function Off() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // document.getElementById("su").innerHTML =
+                    //     this.responseText;
+                }
+            };
+            // xhttp.open("GET", "https://api.thingspeak.com/update?api_key=D58F8NEVMTQOL5RG&field1=0", true);
+            xhttp.open("GET", "https://api.thingspeak.com/update?api_key=W7EAO7E7ZWAS3ZYB&field1=0", true);
+            xhttp.send();
+
+            document.getElementById("st").innerHTML = "Successfuly Turned OFF";
+        }
+</script>
+
+</html>
